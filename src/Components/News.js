@@ -20,9 +20,13 @@ const News=(props)=>{
   
      const updateNews=async()=>{
       props.setProgress(10);
-      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=d093053d72bc40248998159804e0e67d&page=${page}&pageSize=${props.pageSize}`;
+      // https://newsdata.io/api/1/news?apikey=pub_163195c438a7f05f2b7c4f5f93c8d95b6870d
+      // const url = `https://newsdata.io/api/top-headlines?country=${props.country}&category=${props.category}&apiKey=pub_163195c438a7f05f2b7c4f5f93c8d95b6870d&page=${page}&pageSize=${props.pageSize}`;
+      // const url = `https://newsdata.io/api/${page}/news?apikey=pub_163195c438a7f05f2b7c4f5f93c8d95b6870d&q=${props.category}`
+      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pagesize}`; 
       setLoading(true);
       let data = await fetch(url);
+      console.log(data)
       props.setProgress(30);
       let parsedData = await data.json()
       props.setProgress(70);
@@ -30,6 +34,7 @@ const News=(props)=>{
       setTotalResults(parsedData.totalResults)
       setLoading(false)
       props.setProgress(100);
+      
   }
 
  useEffect(() => {
@@ -78,9 +83,9 @@ const News=(props)=>{
           <h1 className="text-center" style={{marginTop:"66px"}}>NewsHunter-Top {capitalize(props.category)} Headlines</h1>
           {loading&&<Spinner/>}
           <InfiniteScroll  style={{height: 'auto' ,overflow: 'hidden'}}
-          dataLength={articles.length}
+          dataLength={articles?.length}
           next={fetchMoreData}
-          hasMore={articles.length !==totalResults}
+          hasMore={articles?.length!==totalResults}
           loader={<Spinner/>}
          >
           <div className="container">
